@@ -4,14 +4,18 @@ import android.app.Dialog
 import android.content.Context
 import android.content.pm.ActivityInfo.WindowLayout
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import com.google.android.material.textfield.TextInputLayout.LengthCounter
 import com.harjot.fragmentspractice.databinding.FragmentFirstBinding
 import com.harjot.fragmentspractice.databinding.TestDialogLayoutBinding
+import kotlin.properties.Delegates
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,21 +27,20 @@ private const val ARG_PARAM2 = "param2"
  * Use the [FirstFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FirstFragment : Fragment() {
+class FirstFragment : Fragment(),ActivityInterface {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     var mainActivity : MainActivity?=null
-    var binding : FragmentFirstBinding?= null
+    lateinit var binding : FragmentFirstBinding
+    var counter=0
+    private val TAG = "FirstFragment"
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Toast.makeText(requireContext(), "onAttach", Toast.LENGTH_SHORT).show()
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainActivity = activity as MainActivity
         arguments?.let {
-            Toast.makeText(requireContext(), "onCreate", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(requireContext(), "onCreate", Toast.LENGTH_SHORT).show()
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
@@ -47,25 +50,52 @@ class FirstFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Toast.makeText(requireContext(), "onCreateView", Toast.LENGTH_SHORT).show()
-        mainActivity = activity as MainActivity
+//        Toast.makeText(requireContext(), "onCreateView", Toast.LENGTH_SHORT).show()
         binding = FragmentFirstBinding.inflate(layoutInflater)
+        mainActivity?.activityInterface = this
         // Inflate the layout for this fragment
-        binding?.btnCsDialog?.setOnClickListener {
-            var dialog = Dialog(mainActivity!!)
-            var dialogBinding = TestDialogLayoutBinding.inflate(layoutInflater)
-            dialog.setContentView(dialogBinding.root)
-            dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT)
-            dialogBinding.btnOk.setOnClickListener {
-                if (dialogBinding.etText.text.toString().trim().isNullOrEmpty()){
-                    dialogBinding.etText.error = "Enter Text"
-                }else{
-                    dialog.dismiss()
-                }
-            }
-            dialog.show()
+//        binding?.btnCsDialog?.setOnClickListener {
+//            mainActivity?.textChange("")
+//            var dialog = Dialog(mainActivity!!)
+//            var dialogBinding = TestDialogLayoutBinding.inflate(layoutInflater)
+//            dialog.setContentView(dialogBinding.root)
+//            dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT)
+//            dialogBinding.btnOk.setOnClickListener {
+//                if (dialogBinding.etText.text.toString().trim().isNullOrEmpty()){
+//                    dialogBinding.etText.error = "Enter Text"
+//                }else{
+//                    dialog.dismiss()
+//                }
+//            }
+//            dialog.show()
+//        }
+        binding.firstFragment.setOnClickListener {
+            binding.firstFragment.setBackgroundColor(ContextCompat.getColor(mainActivity!!,R.color.white))
+
         }
-        return binding?.root
+        binding.btnPassValue.setOnClickListener {
+            if (binding.etText.text.toString().trim().isNullOrEmpty()){
+                binding.etText.error = "Enter Text"
+            }else{
+                mainActivity?.textChange(binding.etText.text.toString().trim())
+            }
+        }
+        binding.btnInc.setOnClickListener {
+            counter++
+            mainActivity?.counterUpdate(counter)
+            Log.e(TAG, "Inc: ${counter}", )
+        }
+        binding.btnDec.setOnClickListener {
+            counter--
+            mainActivity?.counterUpdate(counter)
+            Log.e(TAG, "dec: ${counter} ", )
+        }
+        binding.btnReset.setOnClickListener {
+            counter=0
+            mainActivity?.counterUpdate(0)
+            Log.e(TAG, "reset: $counter", )
+        }
+        return binding.root
     }
 
     companion object {
@@ -88,28 +118,15 @@ class FirstFragment : Fragment() {
             }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Toast.makeText(mainActivity, "onResume", Toast.LENGTH_SHORT).show()
+    override fun colorChange(color: Int) {
+        when(color){
+            1->binding.firstFragment.setBackgroundColor(ContextCompat.getColor(mainActivity!!,R.color.red))
+            2->binding.firstFragment.setBackgroundColor(ContextCompat.getColor(mainActivity!!,R.color.green))
+            3->binding.firstFragment.setBackgroundColor(ContextCompat.getColor(mainActivity!!,R.color.blue))
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Toast.makeText(mainActivity, "onDestroy", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Toast.makeText(mainActivity, "onDestroyedView", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Toast.makeText(mainActivity, "onPause", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Toast.makeText(mainActivity, "onDetach", Toast.LENGTH_SHORT).show()
+    override fun textUpdate(text: String) {
+        binding.etText.setText(text)
     }
 }

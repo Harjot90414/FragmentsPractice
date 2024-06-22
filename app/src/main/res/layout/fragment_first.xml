@@ -1,24 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FirstFragment">
+    tools:context=".FirstFragment"
+    android:orientation="vertical"
+    android:id="@+id/firstFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
-    <!-- TODO: Update blank fragment layout -->
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fragment"
+            android:textStyle="italic|bold"
+            android:textSize="30dp"
+            android:gravity="center"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"
+            android:layout_marginTop="20dp"
+            android:hint="Enter Text">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cornerRadius="10dp"
-            android:text="Custom Dialog"
+            android:text="Pass Value"
             android:textSize="20sp"
-            android:id="@+id/btnCsDialog"/>
-    </LinearLayout>
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:id="@+id/btnPassValue"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cornerRadius="10dp"
+                    android:text="Inc"
+                    android:layout_weight="1"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="@dimen/margin_10dp"
+                    android:layout_marginStart="@dimen/margin_10dp"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/btnInc"/>
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cornerRadius="10dp"
+                    android:layout_marginEnd="@dimen/margin_10dp"
+                    android:layout_marginStart="@dimen/margin_10dp"
+                    android:layout_weight="1"
+                    android:text="Reset"
+                    android:textSize="20sp"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/btnReset"/>
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cornerRadius="10dp"
+                    android:layout_marginEnd="@dimen/margin_10dp"
+                    android:layout_marginStart="@dimen/margin_10dp"
+                    android:layout_weight="1"
+                    android:text="Dec"
+                    android:textSize="20sp"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/btnDec"/>
+        </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>
